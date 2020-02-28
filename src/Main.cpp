@@ -3,16 +3,18 @@
 #include "vector"
 #include <random>
 #include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
 int cols, rows;
-int w = 40;
+int w = 20;
 vector<Cell *> grid;
 Cell *current;
 int i = 0;
-int width = 400;
-int height = 400;
+int width = 600;
+int height = 600;
+stack<Cell *> s;
 
 Cell *checkNeighbors(Cell *cell);
 int index(int i, int j);
@@ -90,8 +92,6 @@ int pickRandom(int i, int j)
 
 void removeWalls(Cell *a, Cell *b)
 {
-	cout << "Removing wall" << endl;
-
 	int x = a->i - b->i;
 	if (x == 1)
 	{
@@ -127,10 +127,6 @@ int main()
 #ifdef SFML_SYSTEM_WINDOWS
 	__windowsHelper.setIcon(window.getSystemHandle());
 #endif
-
-	sf::RectangleShape rectangle(sf::Vector2f(120.0, 120.0));
-	rectangle.setFillColor(sf::Color::White);
-
 	// sf::Texture shapeTexture;
 	// shapeTexture.loadFromFile("content/sfml.png");
 	// shape.setTexture(&shapeTexture);
@@ -151,31 +147,36 @@ int main()
 
 	while (window.isOpen())
 	{
-		window.setFramerateLimit(2);
+		window.clear();
+		window.setFramerateLimit(5);
 
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
-
-			if (event.type == sf::Event::KeyPressed)
-			{
-				// i++;
-				// grid[i-1]->visited = false;
-				// current = grid[i];
-			}
 		}
 
-		window.clear();
+		current->visited = true;
+		current->highlight = true;
 
 		Cell *next = checkNeighbors(current);
 		if (next != NULL)
 		{
 			next->visited = true;
+			next->highlight = false;
 
+			//STEP 2
+			s.push(current);
+
+			//STEP 3
 			removeWalls(next, current);
 
 			current = next;
+		}
+		else if (s.size() > 0)
+		{
+			current = s.top();
+			s.pop();
 		}
 
 		for (auto &&i : grid)
@@ -184,7 +185,6 @@ int main()
 			window.draw(i->rect);
 			window.draw(i->rectFilled);
 		}
-
 		window.display();
 	}
 
