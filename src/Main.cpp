@@ -148,7 +148,7 @@ int main()
 	while (window.isOpen())
 	{
 		window.clear();
-		window.setFramerateLimit(5);
+		window.setFramerateLimit(15);
 
 		while (window.pollEvent(event))
 		{
@@ -177,6 +177,7 @@ int main()
 		{
 			current = s.top();
 			s.pop();
+			current->highlight = false;
 		}
 
 		for (auto &&i : grid)
