@@ -119,17 +119,8 @@ void removeWalls(Cell *a, Cell *b)
 
 int main()
 {
-#if defined(_DEBUG)
-	std::cout << "Hello World!" << std::endl;
-#endif
+	sf::RenderWindow window(sf::VideoMode(width, height), "");
 
-	sf::RenderWindow window(sf::VideoMode(width, height), "SFML works!");
-#ifdef SFML_SYSTEM_WINDOWS
-	__windowsHelper.setIcon(window.getSystemHandle());
-#endif
-	// sf::Texture shapeTexture;
-	// shapeTexture.loadFromFile("content/sfml.png");
-	// shape.setTexture(&shapeTexture);
 	cols = floor(width / w);
 	rows = floor(height / w);
 	for (int j = 0; j < rows; j++)
